@@ -395,7 +395,7 @@ jobs:
 #########################################################################################
   contrib-readme-job:
 #    if: github.event_name == 'release' && github.event.action == 'published' # Only run on release but not on prerelease
-    needs: [prepare-release]
+ #   needs: [prepare-release]
     runs-on: ubuntu-latest
     permissions:
       contents: write
