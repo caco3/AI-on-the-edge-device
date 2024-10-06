@@ -391,30 +391,22 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
-
-  rel:
-    if: github.event_name == 'release' 
+  contrib-readme-job2:
+    if: github.event_name == 'release' && github.event.action == 'published' # Only run on release but not on prerelease
     needs: [release]
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-    - name: script
-      run: |
-        echo github.event_name
-        
-  pub:
-    if:  github.event.action == 'published'
-    needs: [release]
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: script
-      run: |
-        echo github.event_name
+        - name: Contribute List
+          uses: akhilmhdh/contributors-readme-action@v2.3.10
+          with:
+              image_size: 50  
+              use_username: true
+              columns_per_row: 8
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 #########################################################################################
