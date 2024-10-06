@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: bla
       run: |
-       - echo "bla"
+       echo "bla"
 
 #########################################################################################
 ## Update Contributors List in README.md
