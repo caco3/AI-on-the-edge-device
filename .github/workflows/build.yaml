@@ -393,6 +393,32 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
+
+  rel:
+    if: github.event_name == 'release' 
+    needs: [release]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: script
+      run: |
+        echo github.event_name
+        
+  pub:
+    if:  github.event.action == 'published'
+    needs: [release]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: script
+      run: |
+        echo github.event_name
+
+
 #########################################################################################
 ## Update the Web Installer on a release
 #########################################################################################
