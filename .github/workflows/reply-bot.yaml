@@ -27,8 +27,9 @@ jobs:
         echo "${{ github.event.discussion.body }}" > body.md  
         echo "1-------------------------"
         cat body.md
-        echo "-------------------------"
-        sed -i 's/\`/x/g' body.md   
+        exit
+        echo "-------------------------"        
+        sed -i 's/`/x/g' body.md   
         echo "2-------------------------"     
         cat body.md
         echo "3-------------------------"
