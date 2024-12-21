@@ -16,13 +16,18 @@ trigger_list = [
 ]
 
 
-def process_discussion(actor, title, body, html_file):
+def process_discussion(actor, title, body):
     """Analyses the given title and body and creates a response based on teh found trigegr words"""
+    log.info(f"Dear @{actor}")
+    log.info(f"title: {title}")
+
     title = markdown.markdown(title)
     title = title.replace("p>", "h1>")
 
     body = body.replace("`", "")  # remove the code starts as it upsets bash
     body = body.replace("![", "[")  # Replace images with the links to the images
+    log.info(f"body: {body}")
+
     body = markdown.markdown(body)
 
     trigger_word_responses =[]
@@ -64,10 +69,6 @@ if __name__ == "__main__":
     actor = os.environ["GH_DISCUSSION_ACTOR"]
     title = os.environ["GH_DISCUSSION_TITLE"]
     body = os.environ["GH_DISCUSSION_BODY"]
-
-    log.info(f"Dear @{actor}\n\n")
-    log.info(f"title: {title}\n\n")
-    log.info(f"body: {body}\n")
 
     response = process_discussion(actor, title, body)
 
