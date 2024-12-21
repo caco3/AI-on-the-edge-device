@@ -52,7 +52,7 @@ Here are some useful links based on your input:
 """
 
         for word in trigger_word_responses:
-            response += f" - {word}"
+            response += f" - {word}\n"
 
         response += """
         
