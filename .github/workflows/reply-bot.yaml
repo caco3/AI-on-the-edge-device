@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: analyze
         run: |
-          echo "response="\"Hello World\"" >>  >> $GITHUB_OUTPUT
+          echo "response="\"Hello World\"" >> $GITHUB_OUTPUT
 
       - name: Run discussion-auto-responder
         uses: wesleyscholl/discussion-auto-responder@v1.0.8
