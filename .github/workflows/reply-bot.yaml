@@ -27,7 +27,6 @@ jobs:
         id: autoresponder-comment
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          comment_body: "${{ steps.vars.outputs.          comment_body: "${{ steps.vars.outputs.sha_short }}"
- }}"
+          comment_body: "${{ steps.vars.outputs.response }}"
           delay_milliseconds: 1000
 
