@@ -25,7 +25,8 @@ jobs:
       id: analyze
       run: |
         body="$(echo ${{ github.event.discussion.body }} | sed 's/`/x/g')"
-        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ body }}"
+        echo "$body"
+        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "$body"
         response="$(cat response.md | sed 's/$/\\n/g' | tr -d '\n')"
         echo "$response"
         echo "response=$response" >> $GITHUB_OUTPUT
