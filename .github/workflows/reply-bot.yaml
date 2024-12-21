@@ -25,10 +25,10 @@ jobs:
       id: analyze
       run: |
         python discussion-bot/main2.py
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-          GH_REPO: ${{ github.repository }}
-          GH_ACTOR: ${{ github.actor }}
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+        GH_REPO: ${{ github.repository }}
+        GH_ACTOR: ${{ github.actor }}
 
 
     - name: Run discussion-auto-responder
