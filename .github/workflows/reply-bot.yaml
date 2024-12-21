@@ -29,8 +29,8 @@ jobs:
         echo "body: ${{ github.event.discussion.body }}"
         echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
-        response=`python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"`
-        echo "response=$response" >> $GITHUB_OUTPUT
+        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
+        echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
 
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
