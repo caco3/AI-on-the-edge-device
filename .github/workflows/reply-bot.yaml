@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: analyze
-         run: |
+        run: |
           response="Hello World"
 
       - name: Run discussion-auto-responder
