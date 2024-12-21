@@ -18,17 +18,24 @@ jobs:
   bot-response:
     runs-on: ubuntu-24.04
     steps:
-      - name: analyze
-        id: analyze
-        run: |
-          echo "response=Hello_World" >> $GITHUB_OUTPUT
-          echo $GITHUB_OUTPUT
+    - name: Set Variables
+      id: vars
+      run: |
+        echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        echo "branch=$(echo ${{ github.ref_name }} | tr / __)" >> $GITHUB_OUTPUT
+        echo $GITHUB_OUTPUT
 
-      - name: Run discussion-auto-responder
-        uses: wesleyscholl/discussion-auto-responder@v1.0.8
-        id: autoresponder-comment
-        with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          comment_body: "${{ steps.analyze.outputs.response }}"
-          delay_milliseconds: 1000
+    - name: analyze
+      id: analyze
+      run: |
+        echo "response=Hello_World" >> $GITHUB_OUTPUT
+        echo $GITHUB_OUTPUT
+
+    - name: Run discussion-auto-responder
+      uses: wesleyscholl/discussion-auto-responder@v1.0.8
+      id: autoresponder-comment
+      with:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        comment_body: "${{ steps.analyze.outputs.response }}"
+        delay_milliseconds: 1000
 
