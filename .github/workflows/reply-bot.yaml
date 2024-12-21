@@ -3,8 +3,9 @@
 name: Reply-Bot
 
 on:
-  discussion:
-    types: [created]
+  discussion
+#  discussion:
+#    types: [created]
 
 permissions:
   contents: read
@@ -25,6 +26,6 @@ jobs:
         id: autoresponder-comment
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          comment_body: "${response}"
+          comment_body: "${{ response }}"
           delay_milliseconds: 1000
        
