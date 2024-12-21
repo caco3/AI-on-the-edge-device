@@ -24,9 +24,12 @@ jobs:
     - name: analyze
       id: analyze
       run: |
-        echo "${{ github.event.discussion.body }}" > body.md  
+        #echo "${{ github.event.discussion.body }}" > body.md  
         #echo "1-------------------------"
         #cat body.md
+
+        python discussion-bot/main2.py
+
         exit
         echo "-------------------------"        
         sed -i 's/`/x/g' body.md   
