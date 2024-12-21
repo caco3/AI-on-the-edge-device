@@ -26,14 +26,17 @@ jobs:
       run: |
         #echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
-        #echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
+        echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
         cat response.md
+        echo "$GITHUB_CONTEXT"
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
 
     - name: Run discussion-auto-responder
       uses: wesleyscholl/discussion-auto-responder@v1.0.8
       id: autoresponder-comment
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        comment_body: $(cat response.md)
+        comment_body: "${{ steps.analyze.outputs.response }}"
         delay_milliseconds: 1000
 
