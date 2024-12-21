@@ -21,6 +21,7 @@ jobs:
       - name: analyze
         run: |
           echo "response=Hello_World" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
 
       - name: Run discussion-auto-responder
         uses: wesleyscholl/discussion-auto-responder@v1.0.8
