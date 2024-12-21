@@ -11,7 +11,7 @@ trigger_list = [
   [["homeassistant", "Home Assistant", "Home-assistant"], "Check HomeAssistant"],
   [["wrong values"], "Improve ROI, ..."],
   [["lagging", "late transition", "transition", "early"], "check parameter numberanalogtodigittransitionstart"],
-  [["reflection"], "Improve LED, difusor, ..."],
+  [["reflection"], "Improve LED, diffusor, ..."],
   [["LCD", "matrix"], "LCD/Matrix"],
  # [[""], ""],
 ]
@@ -73,10 +73,8 @@ if __name__ == "__main__":
 
     response = process_discussion(actor, title, body)
 
-    log.info(f"response: {response}\n")
+    log.info(f"response: {response}")
 
     # write to file
     with open("response.md", "w") as f:
-        f.write(f"Dear @{actor}\n\n")
-        f.write(f"title: {title}\n\n")
-        f.write(f"body: {body}\n")
+        f.write(f"{response}")
