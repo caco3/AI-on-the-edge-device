@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: analyze
+        id: analyze
         run: |
           echo "response=Hello_World" >> $GITHUB_OUTPUT
           echo $GITHUB_OUTPUT
@@ -28,6 +29,6 @@ jobs:
         id: autoresponder-comment
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          comment_body: "${{ steps.vars.outputs.response }}"
+          comment_body: "${{ steps.analyze.outputs.response }}"
           delay_milliseconds: 1000
 
