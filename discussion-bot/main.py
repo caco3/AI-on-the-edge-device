@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
     actor = os.environ["GH_DISCUSSION_ACTOR"]
     title = os.environ["GH_DISCUSSION_TITLE"]
-    body = os.environ["GH_DISCUSSION_BODY"])
+    body = os.environ["GH_DISCUSSION_BODY"]
 
     log.info(f"Dear @{actor}\n\n")
     log.info(f"title: {title}\n\n")
