@@ -24,7 +24,7 @@ jobs:
     - name: analyze
       id: analyze
       run: |
-        #echo "$GITHUB_CONTEXT"
+        echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
         #echo "hello_world2" > response.md
         response="$(cat response.md | sed 's/$/\\n/g' | tr -d '\n')"
