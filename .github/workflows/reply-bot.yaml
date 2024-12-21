@@ -28,11 +28,11 @@ jobs:
         echo "-------------------------"
         cat body.md
         echo "-------------------------"
-        sed -i 's/`/x/g' body.md   
+        sed -i 's/\`/x/g' body.md   
         echo "-------------------------"     
         cat body.md
         echo "-------------------------"
-        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "$(cat body.md))"
+        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "$(cat body.md)"
         echo "-------------------------"
         response="$(cat response.md | sed 's/$/\\n/g' | tr -d '\n')"
         echo "-------------------------"
