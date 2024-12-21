@@ -25,11 +25,12 @@ jobs:
       id: analyze
       env:
         GH_DISCUSSION_ACTOR: ${{ github.actor }}
-        GH_DISCUSSION_TITLE: ${{ github.title }}
-        GH_DISCUSSION_BODY: ${{ github.body }}
+        GH_DISCUSSION_TITLE: ${{ github.event.discussion.title }}
+        GH_DISCUSSION_BODY: ${{ github.event.discussion.body }}
       run: |
         python discussion-bot/main2.py
-        
+        cat
+
 
     - name: Run discussion-auto-responder
       uses: wesleyscholl/discussion-auto-responder@v1.0.8
