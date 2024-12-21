@@ -27,7 +27,8 @@ jobs:
         #echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
         #echo "hello_world2" > response.md
-        response="$(cat response.md)"
+        #response="$(cat response.md)"
+        response="aa\nbb"
         echo "$response"
         echo "response=$response" >> $GITHUB_OUTPUT
         #echo "$GITHUB_CONTEXT"
