@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
        - name: analyze
-          run: |
-            response="Hello World"
+         run: |
+          response="Hello World"
 
       - name: Run discussion-auto-responder
         uses: wesleyscholl/discussion-auto-responder@v1.0.8
