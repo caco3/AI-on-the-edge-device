@@ -29,6 +29,7 @@ jobs:
         GH_DISCUSSION_BODY: ${{ github.body }}
       run: |
         python discussion-bot/main2.py
+        
 
     - name: Run discussion-auto-responder
       uses: wesleyscholl/discussion-auto-responder@v1.0.8
