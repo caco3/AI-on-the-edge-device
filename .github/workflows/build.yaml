@@ -1,5 +1,7 @@
 name: Build and Pack
 
+on:
+  issue
 #on: [push, pull_request]
 
 jobs:
