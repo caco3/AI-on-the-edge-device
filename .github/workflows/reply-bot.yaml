@@ -27,10 +27,11 @@ jobs:
         echo "actor: ${{ github.actor }}"
         echo "title: ${{ github.event.discussion.title }}"
         echo "body: ${{ github.event.discussion.body }}"
-        echo "$GITHUB_CONTEXT"
+        #echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
-        echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
+        #echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
+        cat response.md
 
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -40,6 +41,6 @@ jobs:
       id: autoresponder-comment
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        comment_body: "${{ steps.analyze.outputs.response }}"
+        comment_body: "$(cat response.md)}"
         delay_milliseconds: 1000
 
