@@ -20,13 +20,14 @@ jobs:
     steps:
       - name: analyze
         run: |
-          response="Hello World"
+          echo "response="\"Hello World\"" >>  >> $GITHUB_OUTPUT
 
       - name: Run discussion-auto-responder
         uses: wesleyscholl/discussion-auto-responder@v1.0.8
         id: autoresponder-comment
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          comment_body: "${{ response }}"
+          comment_body: "${{ steps.vars.outputs.          comment_body: "${{ steps.vars.outputs.sha_short }}"
+ }}"
           delay_milliseconds: 1000
 
