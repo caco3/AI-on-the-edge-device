@@ -1,5 +1,6 @@
 import os
 import logging
+import markdown
 
 log = logging.getLogger(__name__)
 
