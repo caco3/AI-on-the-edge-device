@@ -40,14 +40,13 @@ def process_discussion(actor, title, body):
 
     if len(trigger_word_responses) > 0:
         response = f"Hi @{actor}"
-        response = """
+        response += """
 
 I am the AIOTED-Bot 🤖
 
-I analyzed your question and would like to help you on your issue.        
 Have you already checked our [documentation](https://jomjol.github.io/AI-on-the-edge-device-docs)?
-
-Here are some useful links:
+I analyzed your question and would like to help you on your issue.
+Here are some useful links based on your input:
 
 """
 
@@ -56,8 +55,8 @@ Here are some useful links:
 
         response += """
         
-If this all does not help and you need a power user or developer to look into it (after you really studied the documentation), write a reply with the text `help-needed`."""
-
+If this all does not help and you need support of an experienced user or developer to look into it (after you really studied the documentation), write a reply with the text `help-needed`.
+Please be aware that we are a small team and run this project in our private, free time"""
     else:
         response = ""
     
