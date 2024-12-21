@@ -1,7 +1,7 @@
 name: Build and Pack
 
 on:
-  issue
+  fork
 #on: [push, pull_request]
 
 jobs:
