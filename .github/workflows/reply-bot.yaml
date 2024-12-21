@@ -24,12 +24,20 @@ jobs:
     - name: analyze
       id: analyze
       run: |
-        echo "${{ github.event.discussion.body }}" > body.md
-        sed -i 's/`/x/g' body.md        
-        #cat body.md
+        echo "${{ github.event.discussion.body }}" > body.md  
+        echo "-------------------------"
+        cat body.md
+        echo "-------------------------"
+        sed -i 's/`/x/g' body.md   
+        echo "-------------------------"     
+        cat body.md
+        echo "-------------------------"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "$(cat body.md))"
+        echo "-------------------------"
         response="$(cat response.md | sed 's/$/\\n/g' | tr -d '\n')"
-        #echo "$response"
+        echo "-------------------------"
+        echo "$response"
+        echo "-------------------------"
         echo "response=$response" >> $GITHUB_OUTPUT
 
 
