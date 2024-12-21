@@ -9,6 +9,6 @@ if __name__ == "__main__":
 
     # write to file
     with open("response.md", "w") as f:
-        f.write(f"Dear @{args.actor}\n")
-        f.write(f"title: {args.title}\n")
-     #   f.write(f"body: {args.body}\n")
+        f.write(f"Dear @{args.actor}\n\n")
+        f.write(f"title: {args.title}\n\n")
+        f.write(f"body: {args.body}\n")
