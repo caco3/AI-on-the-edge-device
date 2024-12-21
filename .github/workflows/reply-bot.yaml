@@ -26,12 +26,11 @@ jobs:
       run: |
         #echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
+        echo "hello_world2" >> response.md
         echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
         cat response.md
         echo "$GITHUB_CONTEXT"
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-
+    
     - name: Run discussion-auto-responder
       uses: wesleyscholl/discussion-auto-responder@v1.0.8
       id: autoresponder-comment
