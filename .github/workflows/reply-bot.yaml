@@ -18,17 +18,13 @@ jobs:
   bot-response:
     runs-on: ubuntu-24.04
     steps:
-    - name: Set Variables
-      id: vars
-      run: |
-        echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        echo "branch=$(echo ${{ github.ref_name }} | tr / __)" >> $GITHUB_OUTPUT
-        echo $GITHUB_OUTPUTq
-
     - name: analyze
       id: analyze
       run: |
         echo "response=Hello_World" >> $GITHUB_OUTPUT
+        echo $GLOBAL_VAR
+        echo $JOB_VAR
+        echo $STEP_VAR
         echo $GITHUB_OUTPUT
 
     - name: Run discussion-auto-responder
