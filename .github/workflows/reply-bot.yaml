@@ -29,12 +29,8 @@ jobs:
         echo "body: ${{ github.event.discussion.body }}"
         #echo "$GITHUB_CONTEXT"
         python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
-        python discussion-bot/main.py --actor "${{ github.actor }}" --title "${{ github.event.discussion.title }}" --body "${{ github.event.discussion.body }}"
         #echo "response=$(cat response.md)" >> $GITHUB_OUTPUT
         cat response.md
-
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
 
     - name: Run discussion-auto-responder
       uses: wesleyscholl/discussion-auto-responder@v1.0.8
