@@ -34,6 +34,6 @@ jobs:
       id: autoresponder-comment
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        comment_body: $(cat response.md)}
+        comment_body: $(cat response.md)
         delay_milliseconds: 1000
 
