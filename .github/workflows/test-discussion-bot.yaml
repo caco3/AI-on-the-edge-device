@@ -5,8 +5,8 @@ name: Test-Discussion-Bot
 # Trigger on changes of the discussion-bot folder
 on:
   push
-    path:
-      discussion-bot
+    paths:
+    - discussion-bot
 
 permissions:
   contents: read
