@@ -34,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "Discussion-Bot_test-report"
-        path: ./result.html
+        path: ./discussion-bot/test/result.html
