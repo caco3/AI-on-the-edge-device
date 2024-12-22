@@ -1,7 +1,8 @@
-# Reply Bot
+# Reply Bot for discussions
 
 name: Reply-Bot
 
+# Trigger on new discussions
 on:
   discussion:
     types: [created]
