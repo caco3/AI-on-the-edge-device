@@ -15,7 +15,7 @@ permissions:
   discussions: write
 
 jobs:
-  bot-response:
+  bot-test:
     runs-on: ubuntu-24.04
     steps:
     - name: setup
@@ -34,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "Discussion-Bot_test-report"
-        path: ./report.html
+        path: ./result.html
