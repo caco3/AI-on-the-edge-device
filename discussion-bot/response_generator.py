@@ -23,18 +23,6 @@ class Response_generator():
     def process_discussion(self, actor, title, body):
         """Analyses the given title and body and creates a response based on the found trigger words
         Input and output have to be in the markdown format"""
-        #log.info(f"Dear @{actor}")
-        #log.info(f"title: {title}")
-
-        #title = markdown.markdown(title)
-        #title = title.replace("p>", "h1>")
-
-        #body = body.replace("`", "")  # remove the code starts as it upsets bash
-        #body = body.replace("![", "[")  # Replace images with the links to the images
-        #log.info(f"body: {body}")
-
-        #body = markdown.markdown(body)
-
         trigger_word_responses = []
 
         for entry in self.trigger_list:
@@ -46,10 +34,10 @@ class Response_generator():
             response = f"Hi @{actor}"
             response += """
     
-I am the AIOTED-Bot 🤖
+I am the (experimental) AIOTED-Bot 🤖
 
 Have you already checked our [documentation](https://jomjol.github.io/AI-on-the-edge-device-docs)?
-I analyzed your question and would like to help you on your issue.
+I analyzed your question and would like to help you.
 Here are some useful links based on your input:
 
 """
@@ -58,8 +46,8 @@ Here are some useful links based on your input:
                 response += f" - **{finding[0]}:** {finding[1]}\n"
 
             response += """
-If this all does not help and you need support of an experienced user or developer to look into it (after you really studied the documentation), write a reply with the text `help-needed`.
-Please be aware that we are a small team and run this project in our private, free time!"""
+If this all does not help and you need support of an experienced user or developer to look into it (after you really studied the documentation), you can write a reply with the text `help-needed`.
+Please be aware that we are a small team and run this project in our private, free time, so our time to give support is really limitted!"""
         else:
             response = ""
 
