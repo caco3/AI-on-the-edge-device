@@ -16,11 +16,7 @@ permissions:
 jobs:
   bot-response:
     runs-on: ubuntu-24.04
-    steps:
-    - name: setup
-      run: |
-        pip install markdown
-  
+    steps:  
     - name: Check out the repository to the runner
       uses: actions/checkout@v4  
 
