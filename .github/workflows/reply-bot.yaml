@@ -5,8 +5,6 @@ name: Reply-Bot
 on:
   discussion:
     types: [created]
-  discussion_comment: # testing
-    types: [created]
 
 permissions:
   contents: read
@@ -44,4 +42,4 @@ jobs:
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         comment_body: "${{ steps.analyze.outputs.response }}"
-        delay_milliseconds: 1000
+        delay_milliseconds: 0
