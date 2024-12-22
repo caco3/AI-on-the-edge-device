@@ -32,7 +32,7 @@ jobs:
         GH_DISCUSSION_TITLE: ${{ github.event.discussion.title }}
         GH_DISCUSSION_BODY: ${{ github.event.discussion.body }}
       run: |
-        python discussion-bot/main.py
+        python discussion-bot/bot.py
         cat response.md
         response="$(cat response.md | sed 's/$/\\n/g' | tr -d '\n')"
         echo "$response"
@@ -45,4 +45,3 @@ jobs:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         comment_body: "${{ steps.analyze.outputs.response }}"
         delay_milliseconds: 1000
-

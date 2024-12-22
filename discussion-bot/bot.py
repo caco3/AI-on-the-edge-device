@@ -6,7 +6,8 @@ log = logging.getLogger(__name__)
 
 
 # List of trigger words and their responses
-# Not case-sensitive!
+# [["TRIGGER WORD 1", "TRIGGER WORD 2", ...], "RESPONSE"]
+# The trigger words are NOT case-sensitive!
 trigger_list = [
   [["homeassistant", "Home Assistant", "Home-assistant"], "Check HomeAssistant"],
   [["wrong values"], "Improve ROI, ..."],
