@@ -64,7 +64,7 @@ with open("discussions.json", "r") as f:
     output_file.write("<th class=vertical-separator>Response</th>")
     output_file.write("</tr>")
 
-    rg = Response_Generator("../response_data.txt")
+    rg = Response_Generator(os.path.dirname(__file__) + "/../" + "response_data.txt")
 
     for i in range(len(discussions) - 1, -1, -1):
         log.info(f"Processing discussion {len(discussions) - i}/{len(discussions)}...")

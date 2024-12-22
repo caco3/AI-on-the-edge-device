@@ -1,3 +1,4 @@
+import os
 import logging
 
 log = logging.getLogger(__name__)
@@ -92,7 +93,9 @@ if __name__ == "__main__":
     title = args.title
     body = args.body
 
-    rg = Response_Generator("response_data.txt")
+
+    print(os.path.realpath(__file__) + "/" + "response_data.txt")
+    rg = Response_Generator(os.path.dirname(__file__) + "/" + "response_data.txt")
 
     response = rg.process_discussion(actor, title, body)
 
