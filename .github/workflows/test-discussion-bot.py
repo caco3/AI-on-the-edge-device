@@ -1,1 +1,37 @@
+# Test for the Discussion Bot
 
+name: Test-Discussion-Bot
+
+# Trigger on changes of the discussion-bot folder
+on:
+  push
+    path:
+      discussion-bot
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  discussions: write
+
+jobs:
+  bot-response:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: setup
+      run: |
+        pip install markdown
+  
+    - name: Check out the repository to the runner
+      uses: actions/checkout@v4  
+
+    - name: Test discussion-responder for the prepared discussions
+      run: |
+        cd discussion-bot/test
+        python test.py
+
+    - name: Upload Test report
+      uses: actions/upload-artifact@v4
+      with:
+        name: "Discussion-Bot_test-report"
+        path: ./report.html
