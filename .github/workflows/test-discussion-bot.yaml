@@ -4,7 +4,7 @@ name: Test-Discussion-Bot
 
 # Trigger on changes of the discussion-bot folder
 on:
-  push
+  push:
     paths:
     - discussion-bot
 
