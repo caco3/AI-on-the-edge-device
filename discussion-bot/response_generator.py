@@ -58,9 +58,8 @@ Here are some useful links based on your input:
                 response += f" - **{finding[0]}:** {finding[1]}\n"
 
             response += """
-    
 If this all does not help and you need support of an experienced user or developer to look into it (after you really studied the documentation), write a reply with the text `help-needed`.
-Please be aware that we are a small team and run this project in our private, free time"""
+Please be aware that we are a small team and run this project in our private, free time!"""
         else:
             response = ""
 
