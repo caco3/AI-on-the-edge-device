@@ -12,9 +12,9 @@ trigger_list = [
   [["homeassistant", "Home Assistant", "Home-assistant"], "Check HomeAssistant"],
   [["wrong values"], "Improve ROI, ..."],
   [["lagging", "late transition", "transition", "early"], "Check parameter numberanalogtodigittransitionstart"],
-  [["reflection"], "Improve LED, diffusor, ..."],
-  [["LCD", "matrix"], "LCD/Matrix"],
-  [["Rate too high"], "Set the https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read"],
+  [["reflection"], "Improve LED, diffusor, see xxx"],
+  [["LCD", "matrix"], "See LCD/Matrix xxx"],
+  [["Rate too high"], "See the [FAQ](https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read)"],
  # [[""], ""],
 ]
 
