@@ -53,7 +53,7 @@ Here are some useful links based on your input:
 """
 
         for finding in trigger_word_responses:
-            response += f" -** {finding[0]}:** {finding[1]}\n"
+            response += f" - **{finding[0]}:** {finding[1]}\n"
 
         response += """
         
