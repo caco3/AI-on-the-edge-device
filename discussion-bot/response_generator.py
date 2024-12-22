@@ -61,8 +61,7 @@ class Response_Generator():
 I am the (experimental) AIOTED-Bot 🤖
 
 Have you already checked our [documentation](https://jomjol.github.io/AI-on-the-edge-device-docs)?
-I analyzed your question and would like to help you.
-Here are some useful links based on your input:
+I analyzed your question and I might be able to help you. Here are some useful links based on your input:
 
 """
 
@@ -93,11 +92,8 @@ if __name__ == "__main__":
     title = args.title
     body = args.body
 
-
-    print(os.path.realpath(__file__) + "/" + "response_data.txt")
     rg = Response_Generator(os.path.dirname(__file__) + "/" + "response_data.txt")
 
     response = rg.process_discussion(actor, title, body)
 
-    log.info("response:")
-    log.info(f"{response}")
+    log.info(f"response:\n{response}")

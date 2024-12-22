@@ -6,6 +6,13 @@
 ; The trigger patterns are case-insensitive!
 ; Each trigger patterns must be on its own line.
 ; Comments can be added with a ; at the start of the line.
+; It is suggested to start each data record with a comment explaining what it is about.
+
+; Rate too high
+See the [Rate too high in our FAQ](https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read)
+Rate too high
+
+; Homeassistant
 Check HomeAssistant
 homeassistant
 Home Assistant
@@ -26,6 +33,3 @@ reflection
 See LCD/Matrix xxx
 LCD
 matrix
-
-See the [FAQ](https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read)
-Rate too high
