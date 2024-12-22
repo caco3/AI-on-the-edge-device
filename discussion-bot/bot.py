@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 trigger_list = [
   [["homeassistant", "Home Assistant", "Home-assistant"], "Check HomeAssistant"],
   [["wrong values"], "Improve ROI, ..."],
-  [["lagging", "late transition", "transition", "early"], "check parameter numberanalogtodigittransitionstart"],
+  [["lagging", "late transition", "transition", "early"], "Check parameter numberanalogtodigittransitionstart"],
   [["reflection"], "Improve LED, diffusor, ..."],
   [["LCD", "matrix"], "LCD/Matrix"],
   [["Rate too high"], "Set the https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read"],
@@ -38,7 +38,7 @@ def process_discussion(actor, title, body):
     for entry in trigger_list:
         for word in entry[0]:
             if (word.lower() in title.lower()) or (word.lower() in body.lower()):
-                trigger_word_responses.append(entry[1])
+                trigger_word_responses.append([word, entry[1]])
 
     if len(trigger_word_responses) > 0:
         response = f"Hi @{actor}"
@@ -52,8 +52,8 @@ Here are some useful links based on your input:
 
 """
 
-        for word in trigger_word_responses:
-            response += f" - {word}\n"
+        for finding in trigger_word_responses:
+            response += f" -** {finding[0]}:** {finding[1]}\n"
 
         response += """
         
