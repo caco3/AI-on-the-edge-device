@@ -6,7 +6,7 @@ import tarfile
 
 import sys
 sys.path.append("..")
-import response_generator
+from response_generator import Response_Generator
 
 log = logging.getLogger(__name__)
 
@@ -35,9 +35,7 @@ body {
 
 """
 
-
 logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
-
 
 if os.path.exists("discussions.json"):
     os.remove("discussions.json")
@@ -53,18 +51,20 @@ with open("discussions.json", "r") as f:
     output_file = open("result.html", "w")
 
     output_file.write("<html>")
-    output_file.write("<head>")
-    output_file.write("<style>")
+    output_file.write("<head>\n")
+    output_file.write("<style>\n")
     output_file.write(css)
-    output_file.write("</style>")
-    output_file.write("</head>")
-    output_file.write("<body>")
+    output_file.write("</style>\n")
+    output_file.write("</head>\n")
+    output_file.write("<body>\n")
     output_file.write("<h1>Discussions/Responses</h1>")
     output_file.write("<table>")
     output_file.write("<tr>")
     output_file.write("<th>Discussion (first comment only)</th>")
     output_file.write("<th class=vertical-separator>Response</th>")
     output_file.write("</tr>")
+
+    rg = Response_Generator("../response_data.txt")
 
     for i in range(len(discussions) - 1, -1, -1):
         log.info(f"Processing discussion {len(discussions) - i}/{len(discussions)}...")
@@ -80,7 +80,6 @@ with open("discussions.json", "r") as f:
 
         #log.info(f"actor: {actor}, title: {title}, body: {body}")
 
-        rg = response_generator.Response_generator()
         response = rg.process_discussion(actor, title, body)
         #log.info(f"response: {response}")
 
@@ -99,5 +98,4 @@ with open("discussions.json", "r") as f:
     output_file.write("</html>")
     output_file.close()
 
-    log.info("")
     log.info("Done. Check the result.html file.")

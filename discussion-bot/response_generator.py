@@ -2,34 +2,58 @@ import logging
 
 log = logging.getLogger(__name__)
 
-class Response_generator():
-    def __init__(self):
-        pass
+class Data_Record_Parser():
+    data_records = []
 
-    # List of trigger words and their responses
-    # [["TRIGGER WORD 1", "TRIGGER WORD 2", ...], "RESPONSE"]
-    # The trigger words are NOT case-sensitive!
-    trigger_list = [
-        [["homeassistant", "Home Assistant", "Home-assistant"], "Check HomeAssistant"],
-        [["wrong values"], "Improve ROI, ..."],
-        [["lagging", "late transition", "transition", "early"], "Check parameter numberanalogtodigittransitionstart"],
-        [["reflection"], "Improve LED, diffusor, see xxx"],
-        [["LCD", "matrix"], "See LCD/Matrix xxx"],
-        [["Rate too high"], "See the [FAQ](https://jomjol.github.io/AI-on-the-edge-device-docs/FAQs/#rate-too-high-read)"],
-        # [[""], ""],
-    ]
+    def __init__(self, data_file):
+        records_count = 0
+        record_started = False
+        with open(data_file, "r") as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith(";"):  # Comment line
+                    continue
+
+                if line != "": # Line contains data
+                    if not record_started:
+                        record_started = True
+                        self.data_records.append({"response": None, "trigger_patterns": []})
+                        records_count += 1
+
+                    if self.data_records[records_count - 1]["response"] == None:  # Record has no response yet -> Add line as response
+                        self.data_records[records_count - 1]["response"] = line
+                    else: # Record has a response -> Add line as trigger pattern
+                        self.data_records[records_count - 1]["trigger_patterns"].append(line)
+                else:  # Empty line -> end of record
+                    record_started = False
+                    continue
+
+        log.info(f"Found {records_count} data records")
+
+    def get_records(self):
+        return self.data_records
+
+
+class Response_Generator():
+    def __init__(self, data_file):
+        parser = Data_Record_Parser(data_file)
+        self.data_records = parser.get_records()
 
     def process_discussion(self, actor, title, body):
         """Analyses the given title and body and creates a response based on the found trigger words
         Input and output have to be in the markdown format"""
-        trigger_word_responses = []
+        title = title.lower()
+        body = body.lower()
 
-        for entry in self.trigger_list:
-            for word in entry[0]:
-                if (word.lower() in title.lower()) or (word.lower() in body.lower()):
-                    trigger_word_responses.append([word, entry[1]])
+        responses = []
 
-        if len(trigger_word_responses) > 0:
+        for data_record in self.data_records:
+            for trigger_pattern in data_record["trigger_patterns"]:
+                if (trigger_pattern.lower() in title) or (trigger_pattern.lower() in body):
+                    responses.append([trigger_pattern, data_record["response"]])
+                    break
+
+        if len(responses) > 0:  # At least one trigger pattern matched
             response = f"Hi @{actor}"
             response += """
     
@@ -41,7 +65,7 @@ Here are some useful links based on your input:
 
 """
 
-            for finding in trigger_word_responses:
+            for finding in responses:
                 response += f" - **{finding[0]}:** {finding[1]}\n"
 
             response += """
@@ -68,7 +92,7 @@ if __name__ == "__main__":
     title = args.title
     body = args.body
 
-    rg = Response_generator()
+    rg = Response_Generator("response_data.txt")
 
     response = rg.process_discussion(actor, title, body)
 
