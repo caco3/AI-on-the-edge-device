@@ -15,7 +15,7 @@ rg = response_generator.Response_generator()
 
 response = rg.process_discussion(actor, title, body)
 
-log.info(f"response: {response}")
+#log.info(f"response: {response}")
 
 # write to file
 with open("response.md", "w") as f:
