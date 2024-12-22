@@ -1,6 +1,6 @@
 # Reply Bot for discussions
 
-name: Reply-Bot
+name: Discussion-Bot
 
 # Trigger on new discussions
 on:
