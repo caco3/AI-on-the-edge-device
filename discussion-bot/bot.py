@@ -11,7 +11,9 @@ actor = os.environ["GH_DISCUSSION_ACTOR"]
 title = os.environ["GH_DISCUSSION_TITLE"]
 body = os.environ["GH_DISCUSSION_BODY"]
 
-rg = Response_Generator(os.path.dirname(__file__) + "/" + "response_data.txt")
+rg = Response_Generator(os.path.dirname(__file__) + "/" + "responses.md",
+                        os.path.dirname(__file__) + "/" + "response_intro.md",
+                        os.path.dirname(__file__) + "/" + "response_outro.md")
 
 response = rg.process_discussion(actor, title, body)
 
