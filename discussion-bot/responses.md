@@ -7,6 +7,7 @@ Check HomeAssistant
 - homeassistant
 - Home Assistant
 - Home-assistant
+- asistant
 
 # Wrong Values
 Improve ROI, ...

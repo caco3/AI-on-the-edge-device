@@ -23,6 +23,7 @@ Thus the format must be as following:
 - The title can be empty. It also can be used to note some comments.
 - The title line is followed by a one-line response. All markdown keywords are allowed, but it must stay on one line.
 - Then one or more trigger words get listed as a list. Each line has one trigger word ar phrase.
+- It might also be useful to add typos as trigger patterns, eg. `asistant`.
 - It is suggested to separate the responses with empty lines for easier visual separation, although this is optional.
 
 Example:
