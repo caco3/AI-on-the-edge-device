@@ -64,7 +64,7 @@ class Response_Generator():
 
         if len(responses) > 0:  # At least one trigger pattern matched
             response = self.intro + "\n"
-            response = response.replace("{actor}", "{" + actor + "}")
+            response = response.replace("{actor}", actor)
 
             for finding in responses:
                 response += f" - **{finding[0]}:** {finding[1]}\n"
