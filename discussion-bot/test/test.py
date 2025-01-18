@@ -64,7 +64,9 @@ with open("discussions.json", "r") as f:
     output_file.write("<th class=vertical-separator>Response</th>")
     output_file.write("</tr>")
 
-    rg = Response_Generator(os.path.dirname(__file__) + "/../" + "response_data.txt")
+    rg = Response_Generator(os.path.dirname(__file__) + "/../" + "responses.md",
+                            os.path.dirname(__file__) + "/../" + "response_intro.md",
+                            os.path.dirname(__file__) + "/../" + "response_outro.md")
 
     for i in range(len(discussions) - 1, -1, -1):
         log.info(f"Processing discussion {len(discussions) - i}/{len(discussions)}...")
@@ -94,8 +96,11 @@ with open("discussions.json", "r") as f:
 
         output_file.write(f"<tr><td><h3>{title_html}</h3>{body_html}</td><td class=vertical-separator>{response_html}</td></tr>")
 
+        # break  # testing
+
+    output_file.write("</table>")
     output_file.write("</body>")
     output_file.write("</html>")
     output_file.close()
 
-    log.info("Done. Check the result.html file.")
+    log.info("Done. Please open the result.html file in a webbrowser.")

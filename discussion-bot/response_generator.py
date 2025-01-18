@@ -6,39 +6,47 @@ log = logging.getLogger(__name__)
 class Data_Record_Parser():
     data_records = []
 
-    def __init__(self, data_file):
-        records_count = 0
-        record_started = False
-        with open(data_file, "r") as f:
+    def __init__(self, response_file):
+        self.parse_responses(response_file)
+
+    def parse_responses(self, response_file):
+        with open(response_file, "r") as f:
             for line in f:
                 line = line.strip()
-                if line.startswith(";"):  # Comment line
+                if line == "":  # Empty line
                     continue
 
-                if line != "": # Line contains data
-                    if not record_started:
-                        record_started = True
-                        self.data_records.append({"response": None, "trigger_patterns": []})
-                        records_count += 1
+                if line.startswith("#"):  # Title line -> response start
+                    if len(self.data_records) > 1:  # This is not the first response
+                        # Make sure the previous response record has at least one trigger pattern
+                        if len(self.data_records[-2]["trigger_patterns"]) == 0:  # Number of trigger patterns of the 2nd last record
+                            raise Exception("The previous response record has no trigger patterns!")
 
-                    if self.data_records[records_count - 1]["response"] == None:  # Record has no response yet -> Add line as response
-                        self.data_records[records_count - 1]["response"] = line
-                    else: # Record has a response -> Add line as trigger pattern
-                        self.data_records[records_count - 1]["trigger_patterns"].append(line)
-                else:  # Empty line -> end of record
-                    record_started = False
-                    continue
+                    self.data_records.append({"title": line.replace("# ", ""), "response": None, "trigger_patterns": []})
 
-        log.info(f"Found {records_count} data records")
+                elif line.startswith("-"):  # Trigger pattern line
+                    if self.data_records[-1]["response"] == None:  # Record has no response yet
+                        raise Exception("The response record has no response line!")
+                    self.data_records[-1]["trigger_patterns"].append(line.replace("- ", ""))  # Add to trigger patterns
+
+                else:  # Response line
+                    self.data_records[-1]["response"] = line  # Add as response line
+
+        log.info(f"Found {len(self.data_records)} data records")
+        # import pprint
+        # pprint.pprint(self.data_records, width=300)
+
 
     def get_records(self):
         return self.data_records
 
 
 class Response_Generator():
-    def __init__(self, data_file):
-        parser = Data_Record_Parser(data_file)
+    def __init__(self, response_file, intro_file, outro_file):
+        parser = Data_Record_Parser(response_file)
         self.data_records = parser.get_records()
+        self.intro = open(intro_file, "r").read()
+        self.outro = open(outro_file, "r").read()
 
     def process_discussion(self, actor, title, body):
         """Analyses the given title and body and creates a response based on the found trigger words
@@ -55,22 +63,13 @@ class Response_Generator():
                     break
 
         if len(responses) > 0:  # At least one trigger pattern matched
-            response = f"Hi @{actor}"
-            response += """
-    
-I am the (experimental) AIOTED-Bot 🤖
-
-Have you already checked our [documentation](https://jomjol.github.io/AI-on-the-edge-device-docs)?
-I analyzed your question and I might be able to help you. Here are some useful links based on your input:
-
-"""
+            response = self.intro + "\n"
+            response = response.replace("{actor}", "{" + actor + "}")
 
             for finding in responses:
                 response += f" - **{finding[0]}:** {finding[1]}\n"
 
-            response += """
-If this all does not help and you need support of an experienced user or developer to look into it (after you really studied the documentation), you can write a reply with the text `help-needed`.
-Please be aware that we are a small team and run this project in our private, free time, so our time to give support is really limitted!"""
+            response += "\n" +self.outro
         else:
             response = ""
 
@@ -92,7 +91,9 @@ if __name__ == "__main__":
     title = args.title
     body = args.body
 
-    rg = Response_Generator(os.path.dirname(__file__) + "/" + "response_data.txt")
+    rg = Response_Generator(os.path.dirname(__file__) + "/" + "responses.md",
+                            os.path.dirname(__file__) + "/" + "response_intro.md",
+                            os.path.dirname(__file__) + "/" + "response_outro.md")
 
     response = rg.process_discussion(actor, title, body)
 
