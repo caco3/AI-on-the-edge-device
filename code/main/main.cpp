@@ -33,6 +33,8 @@
 #include "configFile.h"
 #include "server_main.h"
 #include "server_camera.h"
+#include "basic_auth.h"
+
 #ifdef ENABLE_MQTT
     #include "server_mqtt.h"
 #endif //ENABLE_MQTT
@@ -77,10 +79,10 @@
     static heap_trace_record_t trace_record[NUM_RECORDS]; // This buffer must be in internal RAM
 #endif
 
-extern const char* GIT_TAG;
-extern const char* GIT_REV;
-extern const char* GIT_BRANCH;
-extern const char* BUILD_TIME;
+extern const char *GIT_TAG;
+extern const char *GIT_REV;
+extern const char *GIT_BRANCH;
+extern const char *BUILD_TIME;
 
 extern std::string getFwVersion(void);
 extern std::string getHTMLversion(void);
@@ -107,27 +109,51 @@ bool Init_NVS_SDCard()
     sdmmc_host_t host = SDMMC_HOST_DEFAULT();
     host.max_freq_khz = SDMMC_FREQ_HIGHSPEED;
 
+    // For SoCs where the SD power can be supplied both via an internal or external (e.g. on-board LDO) power supply.
+    // When using specific IO pins (which can be used for ultra high-speed SDMMC) to connect to the SD card
+    // and the internal LDO power supply, we need to initialize the power supply first.
+#if SD_PWR_CTRL_LDO_INTERNAL_IO
+    sd_pwr_ctrl_ldo_config_t ldo_config = {
+        .ldo_chan_id = CONFIG_EXAMPLE_SD_PWR_CTRL_LDO_IO_ID,
+    };
+    sd_pwr_ctrl_handle_t pwr_ctrl_handle = NULL;
+
+    ret = sd_pwr_ctrl_new_on_chip_ldo(&ldo_config, &pwr_ctrl_handle);
+    if (ret != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Failed to create a new on-chip LDO power control driver");
+        return ret;
+    }
+    host.pwr_ctrl_handle = pwr_ctrl_handle;
+#endif
+
     // This initializes the slot without card detect (CD) and write protect (WP) signals.
     // Modify slot_config.gpio_cd and slot_config.gpio_wp if your board has these signals.
+#ifdef CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
+    sdmmc_slot_config_t slot_config = {
+        .cd = SDMMC_SLOT_NO_CD,
+        .wp = SDMMC_SLOT_NO_WP,
+    };
+#else
     sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
+#endif
 
     // Set bus width to use:
 #ifdef __SD_USE_ONE_LINE_MODE__
     slot_config.width = 1;
-#ifdef SOC_SDMMC_USE_GPIO_MATRIX
+#ifdef CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
     slot_config.clk = GPIO_SDCARD_CLK;
     slot_config.cmd = GPIO_SDCARD_CMD;
     slot_config.d0 = GPIO_SDCARD_D0;
-#endif
-
-#else
+#endif // end CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
+#else  // else __SD_USE_ONE_LINE_MODE__
     slot_config.width = 4;
-#ifdef SOC_SDMMC_USE_GPIO_MATRIX
+#ifdef CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
     slot_config.d1 = GPIO_SDCARD_D1;
     slot_config.d2 = GPIO_SDCARD_D2;
     slot_config.d3 = GPIO_SDCARD_D3;
-#endif
-#endif
+#endif // end CONFIG_SOC_SDMMC_USE_GPIO_MATRIX
+#endif // end __SD_USE_ONE_LINE_MODE__
 
     // Enable internal pullups on enabled pins. The internal pullups
     // are insufficient however, please make sure 10k external pullups are
@@ -358,6 +384,7 @@ extern "C" void app_main(void)
     MakeDir("/sdcard/firmware");         // mandatory for OTA firmware update
     MakeDir("/sdcard/img_tmp");          // mandatory for setting up alignment marks
     MakeDir("/sdcard/demo");             // mandatory for demo mode
+    MakeDir("/sdcard/config/certs");     // mandatory for mqtt certificates
 
     // Check for updates
     // ********************************************
@@ -429,6 +456,8 @@ extern "C" void app_main(void)
             StatusLED(WLAN_INIT, 3, true);
             return;
         }
+
+        init_basic_auth();
     }
     else if (iWLANStatus == -1) {  // wlan.ini not available, potentially empty or content not readable
         StatusLED(WLAN_INIT, 1, true);
@@ -600,27 +629,57 @@ void migrateConfiguration(void) {
             }
             else if ((isInString(configLines[i], "Zoom")) && (!isInString(configLines[i], "CamZoom")) && (!isInString(configLines[i], "ZoomMode")) && (!isInString(configLines[i], "ZoomOffsetX")) && (!isInString(configLines[i], "ZoomOffsetY"))) {
                 CamZoom_lines = i;
-                CamZoom_value = alphanumericToBoolean(splitted[1]);
+                if (splitted.size() < 2) {
+                    CamZoom_value = false;
+                }
+                else {
+                    ESP_LOGE(TAG, "splitted[1]: %s", splitted[1].c_str());
+                    CamZoom_value = alphanumericToBoolean(splitted[1]);
+                }
                 CamZoom_found = true;
             }
             else if ((isInString(configLines[i], "ZoomMode")) && (!isInString(configLines[i], "CamZoom"))) {
                 CamZoomSize_lines = i;
-                if (isStringNumeric(splitted[1])) {
-                    CamZoomSize_value = std::stof(splitted[1]);
+                if (splitted.size() < 2) {
+                    CamZoomSize_value = 0;
+                }
+                else {
+                    if (isStringNumeric(splitted[1])) {
+                        CamZoomSize_value = std::stof(splitted[1]);
+                    }
+                    else {
+                        CamZoomSize_value = 0;
+                    }
                 }
                 CamZoom_found = true;
             }
             else if ((isInString(configLines[i], "ZoomOffsetX")) && (!isInString(configLines[i], "CamZoom")) && (!isInString(configLines[i], "ZoomOffsetY"))) {
                 CamZoomOffsetX_lines = i;
-                if (isStringNumeric(splitted[1])) {
-                    CamZoomOffsetX_value = std::stof(splitted[1]);
+                if (splitted.size() < 2) {
+                    CamZoomOffsetX_value = 0;
+                }
+                else {
+                    if (isStringNumeric(splitted[1])) {
+                        CamZoomOffsetX_value = std::stof(splitted[1]);
+                    }
+                    else {
+                        CamZoomOffsetX_value = 0;
+                    }
                 }
                 CamZoom_found = true;
             }
             else if ((isInString(configLines[i], "ZoomOffsetY")) && (!isInString(configLines[i], "CamZoom")) && (!isInString(configLines[i], "ZoomOffsetX"))) {
                 CamZoomOffsetY_lines = i;
-                if (isStringNumeric(splitted[1])) {
-                    CamZoomOffsetY_value = std::stof(splitted[1]);
+                if (splitted.size() < 2) {
+                    CamZoomOffsetY_value = 0;
+                }
+                else {
+                    if (isStringNumeric(splitted[1])) {
+                        CamZoomOffsetY_value = std::stof(splitted[1]);
+                    }
+                    else {
+                        CamZoomOffsetY_value = 0;
+                    }
                 }
                 CamZoom_found = true;
             }
@@ -896,11 +955,8 @@ bool setCpuFrequency(void) {
     /* Load config from config file */
     while ((!configFile.GetNextParagraph(line, disabledLine, eof) || 
             (line.compare("[System]") != 0)) && !eof) {}
-    if (eof) {
-        return false;
-    }
 
-    if (disabledLine) {
+    if (eof || disabledLine) {
         return false;
     }
 
@@ -909,7 +965,12 @@ bool setCpuFrequency(void) {
         splitted = ZerlegeZeile(line);
 
         if (toUpper(splitted[0]) == "CPUFREQUENCY") {
-            cpuFrequency = splitted[1];
+            if (splitted.size() < 2) {
+                cpuFrequency = "160";
+            }
+            else {
+                cpuFrequency = splitted[1];
+            }
             break;
         }
     }
