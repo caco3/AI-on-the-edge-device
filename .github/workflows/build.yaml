@@ -20,7 +20,7 @@ jobs:
         
     - name: Test3
       run: |
-        echo "The event type is ${{ github.event.action }}"
+        echo "The event is ${{ github.event }}"
 
     - id: skip_check
       uses: fkirc/skip-duplicate-actions@v5
