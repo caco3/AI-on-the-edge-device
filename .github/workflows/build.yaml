@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - run: echo "event name is:" ${{ github.event_name }} 
+    - run: echo "event type is:" ${{ github.event.action }} 
+
+    
+    
     - name: Test
       run: |
         echo "github.event_name: ${{ github.event_name }}" 
