@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Test
+      run: |
+        echo "github.event_name: ${{ github.event_name }}" 
+        echo "github.event.action: ${{ github.event.action }}"
+
     - id: skip_check
       uses: fkirc/skip-duplicate-actions@v5
       with:
@@ -23,12 +28,6 @@ jobs:
       id: vars
       run: |
         echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        
-    - name: Test
-      run: |
-        echo "github.event_name: $github.event_name" 
-        echo "github.event.action: $github.event.action"
-
         
     - name: Update PIP cache on every commit
       uses: actions/cache@v4
