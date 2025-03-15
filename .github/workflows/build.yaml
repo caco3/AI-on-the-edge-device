@@ -3,6 +3,20 @@ name: Build and Pack
 on: [push, pull_request]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published' # Only run on release but not on prerelease
+    steps:
+    - run: echo "Release"
+
+
+
+
+
+
+
+
+
 #########################################################################################
 ## Build Firmware
 #########################################################################################
