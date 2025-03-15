@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - run: echo "github.event.release.prerelease:" $github.event.release.prerelease
+    - run: echo "github.event.release.prerelease:" ${{ github.event.release.prerelease }}
 
     - run: echo "GITHUB_EVENT_NAME:" $GITHUB_EVENT_NAME
     - run: echo "github.ref_type:" $github.ref_type
