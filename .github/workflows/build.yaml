@@ -14,6 +14,7 @@ jobs:
       run: |
         echo "github.event_name: ${{ github.event_name }}" 
         echo "github.event.action: ${{ github.event.action }}"
+        echo "The event type is ${{ github.event.action }}"
 
     - id: skip_check
       uses: fkirc/skip-duplicate-actions@v5
