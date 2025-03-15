@@ -3,11 +3,23 @@ name: Build and Pack
 on: [push, pull_request]
 
 jobs:
-  test:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - run: echo "release"
+    
+  published:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'published'
+    steps:
+    - run: echo "published"
+    
+  release-published:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published' # Only run on release but not on prerelease
     steps:
-    - run: echo "Release"
+    - run: echo "release , published"
 
 
 
