@@ -12,7 +12,8 @@ jobs:
     steps:
 
     - run: echo "GITHUB_EVENT_NAME:" $GITHUB_EVENT_NAME
-    - run: echo "GITHUB_EVENT_PATH:" $GITHUB_EVENT_PATH
+    - run: echo "github.ref_type:" $github.ref_type
+    - run: echo "github.ref_type:" ${{ github.ref_type }}
 
     
     
