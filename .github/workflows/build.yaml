@@ -1,17 +1,21 @@
 name: Build and Pack
 
-on: [push, pull_request]
+on:
+    push:
+    pull_request:
+    release:
+        types: [released] # Only trigger on published releases (not drafts or pre-released)
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-    - run: echo "Building..."
+        steps:
+            - run: echo "Building..."
 
-  update-pages:
-    if: github.event_name == 'release' && github.event.action == 'published' # Only run on release but not on prerelease
-    runs-on: ubuntu-latest
+    update-pages:
+        if: github.event_name == 'release' # Only run when the trigger is a release
+        runs-on: ubuntu-latest
 
-    steps:
-    - run: echo "We are on a release"
+        steps:
+            - run: echo "We are on a release"
