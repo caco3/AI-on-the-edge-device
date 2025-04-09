@@ -1,10 +1,6 @@
 name: Build and Pack
 
-on:
-    push:
-    pull_request:
-    release:
-        types: [released] # Only trigger on published releases (not drafts or pre-released)
+on: [push, pull_request]
 
 jobs:
   build:
